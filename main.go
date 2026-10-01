@@ -62,9 +62,17 @@ func main() {
     re := regexp.MustCompile(`^(.+?)[：:]\s*(.*)$`)
 
 	for _, line := range lines {
-		// 空行やコロンを含まない行はそのまま出力
+		// 空行はそのまま出力
+		if strings.TrimSpace(line) == "" {
+			fmt.Println(line)
+			continue
+		}
+
 		matches := re.FindStringSubmatch(line)
 		if len(matches) < 3 {
+			// コロンを含まない行（ト書きなど）には、変換処理を適用してから出力
+			line = doubleCharacters(line)
+			line = convertRuby(line)
 			fmt.Println(line)
 			continue
 		}
