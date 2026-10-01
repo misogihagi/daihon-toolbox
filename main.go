@@ -89,6 +89,9 @@ func main() {
 		// 「…」（三点リーダー）と「―」（ダッシュ）の文字数を2倍にする
 		dialogue = doubleCharacters(dialogue)
 
+		// [漢字]{ひらがな} を [[rb:漢字 > ふりがな]] に変換する
+		dialogue = convertRuby(dialogue)
+
 		// コロンを削除し、カギカッコでくくる
 		output := fmt.Sprintf("%s「%s」", resolvedSpeaker, dialogue)
 		fmt.Println(output)
@@ -114,4 +117,10 @@ func doubleCharacters(s string) string {
 		}
 	}
 	return sb.String()
+}
+
+// [漢字]{ひらがな} を [[rb:漢字 > ふりがな]] に変換する関数
+func convertRuby(s string) string {
+	re := regexp.MustCompile(`\[(.*?)\]\{(.*?)\}`)
+	return re.ReplaceAllString(s, "[[rb:$1 > $2]]")
 }
