@@ -8,7 +8,6 @@ import (
 	"strings"
 )
 
-
 func debugPrintMap(nameMap map[string]string) {
 	fmt.Println("nameMap := map[string]string{")
 	for k, v := range nameMap {
@@ -59,7 +58,7 @@ func main() {
 		os.Exit(1)
 	}
 	
-    re := regexp.MustCompile(`^(.+?)[：:]\s*(.*)$`)
+	re := regexp.MustCompile(`^(.+?)[：:]\s*(.*)$`)
 
 	for _, line := range lines {
 		// 空行はそのまま出力
