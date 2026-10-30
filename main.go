@@ -25,7 +25,7 @@ func makeNameMap() map[string]string {
 	defer file.Close()
 
 	nameMap := make(map[string]string)
-	
+
 	// 「名前（略称）：」の形式にマッチする正規表現
 	re := regexp.MustCompile(`^(.+?)（(.+?)）`)
 
@@ -39,13 +39,13 @@ func makeNameMap() map[string]string {
 			nameMap[key] = name
 		}
 	}
-	
+
 	return nameMap
 }
 
 func main() {
 	nameMap := makeNameMap()
-	
+
 	var lines []string
 	scanner := bufio.NewScanner(os.Stdin)
 	// 標準入力から脚本を読み込む
@@ -57,7 +57,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, "読み込みエラー:", err)
 		os.Exit(1)
 	}
-	
+
 	re := regexp.MustCompile(`^(.+?)[：:]\s*(.*)$`)
 
 	for _, line := range lines {
@@ -112,7 +112,7 @@ func main() {
 func doubleCharacters(s string) string {
 	var sb strings.Builder
 	runes := []rune(s)
-	
+
 	for i := 0; i < len(runes); i++ {
 		r := runes[i]
 		switch r {
