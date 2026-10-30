@@ -64,6 +64,7 @@ func main() {
 		// 空行はそのまま出力
 		if strings.TrimSpace(line) == "" {
 			fmt.Println(line)
+			fmt.Println() // ← 空行を挿入
 			continue
 		}
 
@@ -73,6 +74,7 @@ func main() {
 			line = doubleCharacters(line)
 			line = convertRuby(line)
 			fmt.Println(line)
+			fmt.Println() // ← 空行を挿入
 			continue
 		}
 
@@ -102,6 +104,7 @@ func main() {
 		// コロンを削除し、カギカッコでくくる
 		output := fmt.Sprintf("%s「%s」", resolvedSpeaker, dialogue)
 		fmt.Println(output)
+		fmt.Println() // ← 空行を挿入
 	}
 }
 
