@@ -73,6 +73,7 @@ func main() {
 			// コロンを含まない行（ト書きなど）には、変換処理を適用してから出力
 			line = doubleCharacters(line)
 			line = convertRuby(line)
+			line = convertBold(line) // ← 太字（**text**）の置換処理を追加
 			fmt.Println(line)
 			fmt.Println() // ← 空行を挿入
 			continue
@@ -100,6 +101,9 @@ func main() {
 
 		// [漢字]{ひらがな} を [[rb:漢字 > ふりがな]] に変換する
 		dialogue = convertRuby(dialogue)
+
+		// **text** を [b: text] に変換する
+		dialogue = convertBold(dialogue) // ← 台詞内の太字置換処理を追加
 
 		// コロンを削除し、カギカッコでくくる
 		output := fmt.Sprintf("%s「%s」", resolvedSpeaker, dialogue)
@@ -133,4 +137,11 @@ func doubleCharacters(s string) string {
 func convertRuby(s string) string {
 	re := regexp.MustCompile(`\[(.*?)\]\{(.*?)\}`)
 	return re.ReplaceAllString(s, "[[rb:$1 > $2]]")
+}
+
+// **text** を [b: text] に変換する関数
+func convertBold(s string) string {
+	// `\*\*` でアスタリスク2つをエスケープし、非貪欲マッチ `(.*?)` で囲まれた部分をキャプチャします
+	re := regexp.MustCompile(`\*\*(.*?)\*\*`)
+	return re.ReplaceAllString(s, "[b: $1]")
 }
