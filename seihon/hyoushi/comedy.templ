@@ -1,0 +1,278 @@
+package hyoushi
+
+templ Comedy() {
+	<!DOCTYPE html>
+	<html lang="ja">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>コメディ表紙風 — 魔王軍の経理課は今日も残業が止まらない</title>
+			<style>
+				:root {
+					--bg-comic: #fff3b0;
+					--paper-white: #ffffff;
+					--red-alert: #e63946;
+					--blue-pop: #1d3557;
+					--sky: #a8dadc;
+					--orange: #f77f00;
+					--ink: #16161a;
+				}
+
+				* {
+					box-sizing: border-box;
+					margin: 0;
+					padding: 0;
+				}
+
+				body {
+					min-height: 100vh;
+					display: grid;
+					place-items: center;
+					background:
+						repeating-linear-gradient(
+							45deg,
+							rgba(22, 22, 26, 0.04) 0px,
+							rgba(22, 22, 26, 0.04) 8px,
+							transparent 8px,
+							transparent 16px
+						),
+						#f1faee;
+					padding: 32px 16px;
+					font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+					color: var(--ink);
+				}
+
+				.comedy-book {
+					position: relative;
+					width: min(415px, 92vw);
+					aspect-ratio: 1 / 1.45;
+					background:
+						repeating-conic-gradient(
+							from 0deg at 50% 42%,
+							rgba(247, 127, 0, 0.16) 0deg 4deg,
+							transparent 4deg 14deg
+						),
+						var(--bg-comic);
+					border: 3.5px solid var(--ink);
+					border-radius: 6px 16px 16px 6px;
+					box-shadow:
+						8px 8px 0 var(--ink),
+						14px 14px 0 var(--red-alert);
+					padding: 20px 20px 18px;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					overflow: hidden;
+				}
+
+				/* 上部：ジャンル帯・注意書き */
+				.top-strip {
+					position: relative;
+					z-index: 2;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					gap: 8px;
+				}
+
+				.genre-tag {
+					background: var(--ink);
+					color: var(--bg-comic);
+					font-size: 11px;
+					font-weight: 900;
+					letter-spacing: 0.12em;
+					padding: 5px 11px;
+					border-radius: 4px;
+					transform: rotate(-2deg);
+				}
+
+				.caution-tag {
+					background: var(--red-alert);
+					color: var(--paper-white);
+					border: 2px solid var(--ink);
+					font-size: 11px;
+					font-weight: 900;
+					padding: 3px 9px;
+					border-radius: 999px;
+					box-shadow: 2px 2px 0 var(--ink);
+				}
+
+				/* ツッコミ吹き出し＋タイトルエリア */
+				.title-stage {
+					position: relative;
+					z-index: 2;
+					margin: 10px 0 6px;
+					text-align: center;
+				}
+
+				.speech-bubble {
+					display: inline-block;
+					position: relative;
+					background: var(--paper-white);
+					border: 2.5px solid var(--ink);
+					border-radius: 14px;
+					padding: 6px 14px;
+					font-size: 12px;
+					font-weight: 900;
+					color: var(--red-alert);
+					box-shadow: 3px 3px 0 var(--ink);
+					transform: rotate(-2.5deg);
+					margin-bottom: 10px;
+				}
+
+				.speech-bubble::after {
+					content: "";
+					position: absolute;
+					left: 50%;
+					bottom: -9px;
+					transform: translateX(-50%) rotate(45deg);
+					width: 12px;
+					height: 12px;
+					background: var(--paper-white);
+					border-right: 2.5px solid var(--ink);
+					border-bottom: 2.5px solid var(--ink);
+				}
+
+				.comedy-title {
+					font-size: clamp(22px, 5.5vw, 31px);
+					font-weight: 900;
+					line-height: 1.24;
+					letter-spacing: 0.02em;
+					color: var(--paper-white);
+					-webkit-text-stroke: 1.2px var(--ink);
+					text-shadow:
+						3px 3px 0 var(--blue-pop),
+						5px 5px 0 var(--ink);
+				}
+
+				.comedy-title .sub-line {
+					display: block;
+					margin-top: 6px;
+					font-size: clamp(24px, 6vw, 34px);
+					color: #ffe66d;
+					text-shadow:
+						3px 3px 0 var(--red-alert),
+						5px 5px 0 var(--ink);
+				}
+
+				/* 中央：ドタバタシーン枠 */
+				.gag-panel {
+					position: relative;
+					z-index: 2;
+					background: var(--paper-white);
+					border: 3px solid var(--ink);
+					border-radius: 14px;
+					padding: 14px 16px;
+					box-shadow: 4px 4px 0 var(--ink);
+				}
+
+				.gag-header {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					font-size: 11px;
+					font-weight: 900;
+					color: var(--blue-pop);
+					border-bottom: 2px dashed var(--ink);
+					padding-bottom: 6px;
+					margin-bottom: 10px;
+				}
+
+				.receipt-box {
+					background: #f8f9fa;
+					border: 2px solid var(--ink);
+					border-radius: 8px;
+					padding: 10px 12px;
+					font-family: "Courier New", Consolas, monospace;
+					font-size: 12px;
+					line-height: 1.65;
+					transform: rotate(0.8deg);
+				}
+
+				.receipt-box .bad {
+					color: var(--red-alert);
+					font-weight: 700;
+				}
+
+				/* 下部：帯（オビ）風バー＋著者 */
+				.comedy-obi {
+					position: relative;
+					z-index: 2;
+					margin: 12px -20px 0;
+					padding: 10px 18px;
+					background: var(--red-alert);
+					color: var(--paper-white);
+					border-top: 3px solid var(--ink);
+					border-bottom: 3px solid var(--ink);
+					font-size: 12.5px;
+					font-weight: 900;
+					line-height: 1.5;
+					text-align: center;
+					transform: rotate(-1deg);
+					box-shadow: 0 4px 0 var(--ink);
+				}
+
+				.comedy-footer {
+					position: relative;
+					z-index: 2;
+					padding-top: 12px;
+					display: flex;
+					justify-content: space-between;
+					align-items: baseline;
+					font-weight: 900;
+				}
+
+				.comedy-author {
+					font-size: 16px;
+					letter-spacing: 0.08em;
+				}
+
+				.comedy-imprint {
+					font-size: 11px;
+					background: var(--sky);
+					border: 2px solid var(--ink);
+					border-radius: 6px;
+					padding: 2px 8px;
+				}
+			</style>
+		</head>
+		<body>
+			<article class="comedy-book" aria-label="コメディ調の本の表紙デザイン">
+				<header class="top-strip">
+					<span class="genre-tag">お仕事ドタバタコメディ</span>
+					<span class="caution-tag">※笑いすぎて作業中断注意</span>
+				</header>
+
+				<section class="title-stage">
+					<div class="speech-bubble">「勇者撃退の領収書、宛名が『世界平和』ってなんですか!?」</div>
+					<h1 class="comedy-title">
+						魔王軍の経理課は
+						<span class="sub-line">今日も残業が止まらない！</span>
+					</h1>
+				</section>
+
+				<div class="gag-panel">
+					<div class="gag-header">
+						<span>【本日の差し戻し案件】</span>
+						<span>承認待ち：99件</span>
+					</div>
+					<div class="receipt-box">
+						・火の玉魔法の燃料費：計上不可<br/>
+						・城の壁を壊した損害賠償：<span class="bad">月3回目</span><br/>
+						・部下の「ちょっと世界征服してきます」：<span class="bad">理由不備</span>
+					</div>
+				</div>
+
+				<div class="comedy-obi">
+					世界征服より、まずは経費精算！<br/>
+					胃薬片手に奮闘する中間管理職コメディ第1弾！
+				</div>
+
+				<footer class="comedy-footer">
+					<span class="comedy-author">著：電卓 太郎</span>
+					<span class="comedy-imprint">WARAI BUNKO</span>
+				</footer>
+			</article>
+		</body>
+	</html>
+}

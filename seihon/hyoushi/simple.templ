@@ -1,0 +1,195 @@
+package hyoushi
+
+templ Simple() {
+	<!DOCTYPE html>
+	<html lang="ja">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>本の表紙デザイン — 静かな夜の地図</title>
+			<style>
+				:root {
+					--paper: #f6f1e7;
+					--ink: #1b1d21;
+					--accent: #b84a39;
+					--muted: #5e626a;
+					--line: rgba(27, 29, 33, 0.16);
+				}
+
+				* {
+					box-sizing: border-box;
+					margin: 0;
+					padding: 0;
+				}
+
+				body {
+					min-height: 100vh;
+					display: grid;
+					place-items: center;
+					background: radial-gradient(circle at top, #2c303a, #14161a);
+					padding: 32px 16px;
+					font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+					color: var(--ink);
+				}
+
+				/* 本の全体（表紙＋右端の厚み表現） */
+				.book {
+					position: relative;
+					width: min(420px, 92vw);
+					aspect-ratio: 1 / 1.44; /* 文庫〜単行本の中間比率 */
+					background: var(--paper);
+					border-radius: 3px 10px 10px 3px;
+					box-shadow:
+						-10px 0 18px rgba(0, 0, 0, 0.35) inset,
+						6px 0 0 #e6dfd1,
+						8px 0 0 #d4ccb9,
+						10px 0 0 #e6dfd1,
+						12px 0 0 #c8bfa9,
+						22px 28px 50px rgba(0, 0, 0, 0.55);
+					padding: 36px 32px 28px;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					overflow: hidden;
+				}
+
+				/* 紙の微細な質感 */
+				.book::before {
+					content: "";
+					position: absolute;
+					inset: 0;
+					background-image: radial-gradient(rgba(27, 29, 33, 0.045) 1px, transparent 0);
+					background-size: 4px 4px;
+					pointer-events: none;
+				}
+
+				/* 上部：レーベル・版表示 */
+				.top-meta {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+					font-size: 11px;
+					letter-spacing: 0.22em;
+					color: var(--muted);
+					border-bottom: 1px solid var(--line);
+					padding-bottom: 12px;
+					z-index: 1;
+				}
+
+				.label-badge {
+					color: var(--accent);
+					font-weight: 700;
+				}
+
+				/* 中央：幾何学モチーフ＋タイトル */
+				.centerpiece {
+					position: relative;
+					z-index: 1;
+					my: auto;
+					padding: 20px 0;
+				}
+
+				.motif {
+					width: 116px;
+					height: 116px;
+					margin: 0 auto 28px;
+					border-radius: 50%;
+					border: 1.5px solid var(--ink);
+					position: relative;
+					display: grid;
+					place-items: center;
+				}
+
+				.motif::before {
+					content: "";
+					width: 78px;
+					height: 78px;
+					border-radius: 50%;
+					background: var(--accent);
+					opacity: 0.88;
+					transform: translate(12px, -10px);
+				}
+
+				.motif::after {
+					content: "";
+					position: absolute;
+					width: 1px;
+					height: 148px;
+					background: var(--line);
+					transform: rotate(28deg);
+				}
+
+				.subtitle {
+					text-align: center;
+					font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+					font-size: 12px;
+					letter-spacing: 0.28em;
+					color: var(--muted);
+					margin-bottom: 12px;
+				}
+
+				.title {
+					text-align: center;
+					font-size: clamp(28px, 6.5vw, 40px);
+					font-weight: 600;
+					line-height: 1.35;
+					letter-spacing: 0.14em;
+				}
+
+				/* 帯（オビ）風ストリップ */
+				.obi {
+					position: relative;
+					z-index: 1;
+					margin: 22px -32px 0;
+					padding: 16px 28px;
+					background: var(--ink);
+					color: var(--paper);
+					border-top: 2px solid var(--accent);
+					border-bottom: 2px solid var(--accent);
+				}
+
+				.obi-catch {
+					font-size: 14px;
+					line-height: 1.75;
+					letter-spacing: 0.06em;
+					text-align: center;
+				}
+
+				/* 下部：著者名 */
+				.author {
+					position: relative;
+					z-index: 1;
+					text-align: center;
+					padding-top: 20px;
+					font-size: 16px;
+					letter-spacing: 0.35em;
+					font-weight: 500;
+				}
+			</style>
+		</head>
+		<body>
+			<article class="book" aria-label="本の表紙デザイン">
+				<header class="top-meta">
+					<span class="label-badge">KAZE BUNKO</span>
+					<span>042</span>
+				</header>
+
+				<section class="centerpiece">
+					<div class="motif" aria-hidden="true"></div>
+					<p class="subtitle">短編連作集</p>
+					<h1 class="title">静かな夜の<br/>地図</h1>
+
+					<div class="obi">
+						<p class="obi-catch">
+							終電を逃した街角で、まだ名前のない約束を交わす。<br/>
+							読むたびに行き先が変わる、十一の夜咄。
+						</p>
+					</div>
+				</section>
+
+				<footer class="author">湊 蒼一郎</footer>
+			</article>
+		</body>
+	</html>
+}

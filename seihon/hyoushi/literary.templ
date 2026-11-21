@@ -1,0 +1,190 @@
+package hyoushi
+
+templ Literary() {
+	<!DOCTYPE html>
+	<html lang="ja">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>純文学表紙風 — 霧の桟橋で待っている</title>
+			<style>
+				:root {
+					--washi: #f4efe6;
+					--sumi: #1c1c1b;
+					--sumi-soft: #5c5953;
+					--shu: #a63a2b; /* 落款・朱色 */
+					--hairline: rgba(28, 28, 27, 0.22);
+				}
+
+				* {
+					box-sizing: border-box;
+					margin: 0;
+					padding: 0;
+				}
+
+				body {
+					min-height: 100vh;
+					display: grid;
+					place-items: center;
+					background: linear-gradient(180deg, #ded8cc 0%, #c8c0b2 100%);
+					padding: 36px 16px;
+					font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+					color: var(--sumi);
+				}
+
+				/* 四六判・単行本風の静謐な装丁 */
+				.literary-book {
+					position: relative;
+					width: min(410px, 92vw);
+					aspect-ratio: 1 / 1.46;
+					background: var(--washi);
+					border-radius: 2px 8px 8px 2px;
+					box-shadow:
+						inset -10px 0 18px rgba(0, 0, 0, 0.14),
+						6px 0 0 #e7e0d3,
+						8px 0 0 #d6cebf,
+						18px 24px 42px rgba(28, 28, 27, 0.28);
+					padding: 34px 32px;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					overflow: hidden;
+				}
+
+				/* 和紙の繊維・微細なノイズ感 */
+				.literary-book::before {
+					content: "";
+					position: absolute;
+					inset: 0;
+					background-image:
+						radial-gradient(rgba(28, 28, 27, 0.035) 1px, transparent 0),
+						linear-gradient(180deg, rgba(255, 255, 255, 0.45), transparent 35%, rgba(28, 28, 27, 0.04));
+					background-size: 5px 5px, 100% 100%;
+					pointer-events: none;
+				}
+
+				/* 内側の細い枠線（余白を際立たせる） */
+				.inner-frame {
+					position: relative;
+					z-index: 1;
+					flex: 1;
+					border-top: 1px solid var(--hairline);
+					border-bottom: 1px solid var(--hairline);
+					padding: 26px 8px;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+				}
+
+				/* 上部：出版社・叢書名 */
+				.top-colophon {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					font-size: 11px;
+					letter-spacing: 0.28em;
+					color: var(--sumi-soft);
+				}
+
+				/* 中央：縦書きのタイトルと短い詞書（ことばがき） */
+				.vertical-stage {
+					flex: 1;
+					display: flex;
+					flex-direction: row-reverse;
+					justify-content: center;
+					align-items: center;
+					gap: clamp(22px, 6vw, 40px);
+					padding: 18px 0;
+				}
+
+				.vertical-title {
+					writing-mode: vertical-rl;
+					text-orientation: upright;
+					font-size: clamp(28px, 6.8vw, 38px);
+					font-weight: 500;
+					line-height: 1.5;
+					letter-spacing: 0.22em;
+					color: var(--sumi);
+				}
+
+				.epigraph {
+					writing-mode: vertical-rl;
+					text-orientation: upright;
+					font-size: 12px;
+					line-height: 2;
+					letter-spacing: 0.14em;
+					color: var(--sumi-soft);
+					border-right: 1px solid var(--hairline);
+					padding-right: 14px;
+					max-height: 230px;
+				}
+
+				/* 控えめな朱色の印章モチーフ */
+				.hanko {
+					writing-mode: horizontal-tb;
+					display: inline-grid;
+					place-items: center;
+					width: 26px;
+					height: 26px;
+					margin-top: 14px;
+					border: 1.5px solid var(--shu);
+					color: var(--shu);
+					font-size: 11px;
+					font-weight: 700;
+					letter-spacing: 0;
+					line-height: 1.1;
+					border-radius: 2px;
+					opacity: 0.88;
+				}
+
+				/* 下部：著者名 */
+				.bottom-author {
+					display: flex;
+					justify-content: space-between;
+					align-items: baseline;
+					padding-top: 6px;
+				}
+
+				.author-name {
+					font-size: 15px;
+					letter-spacing: 0.42em;
+					font-weight: 500;
+					color: var(--sumi);
+				}
+
+				.edition-note {
+					font-size: 10.5px;
+					letter-spacing: 0.2em;
+					color: var(--sumi-soft);
+				}
+			</style>
+		</head>
+		<body>
+			<article class="literary-book" aria-label="純文学風の本の表紙デザイン">
+				<div class="inner-frame">
+					<header class="top-colophon">
+						<span>青霧書房</span>
+						<span>現代文学選</span>
+					</header>
+
+					<section class="vertical-stage">
+						<h1 class="vertical-title">霧の桟橋で<br/>待っている</h1>
+
+						<div class="epigraph">
+							潮の引く音を数えながら、<br/>
+							誰も来ない船着き場に立つ。<br/>
+							忘れてしまった言葉だけが、<br/>
+							冷たい空気のなかで澄んでいる。
+							<span class="hanko" aria-hidden="true">栞</span>
+						</div>
+					</section>
+
+					<footer class="bottom-author">
+						<span class="author-name">朝倉 静子</span>
+						<span class="edition-note">第一刷</span>
+					</footer>
+				</div>
+			</article>
+		</body>
+	</html>
+}
