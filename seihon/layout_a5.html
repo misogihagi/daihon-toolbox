@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A5サイズ レイアウト</title>
+  <style>
+    /* A5サイズおよび印刷プレビュー用の設定 */
+    @page {
+      size: A5;
+      margin: 15mm;
+    }
+
+    body {
+      background-color: #fff;
+      color: #222;
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", "MS Mincho", serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* 画面表示用：若いページを右にし、左方向へ横スクロールさせる */
+    main {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: flex-start; /* row-reverse時は右端基準で左へ並ぶ */
+      align-items: flex-start;
+      flex-wrap: nowrap;
+      gap: 24px;
+      padding: 20px;
+      overflow-x: auto;
+      box-sizing: border-box;
+    }
+
+    /* A5用紙を模したコンテナ（画面表示用） */
+    .page {
+      flex: 0 0 148mm; /* 縮まずにA5幅を維持 */
+      width: 148mm;
+      min-height: 210mm;
+      padding: 20mm 15mm;
+      margin: 0;
+      background: #fdfcf9;
+      border: 1px solid #dcd6cd;
+      box-sizing: border-box;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    }
+
+    /* 画面幅が狭いときは縦並びにする */
+    @media (max-width: 720px) {
+      main {
+        flex-direction: column;
+        align-items: center;
+        overflow-x: visible;
+      }
+
+      .page {
+        flex: none;
+        width: 100%;
+        max-width: 148mm;
+        min-height: 460px;
+        padding: 26px 22px;
+      }
+    }
+
+    /* 印刷時の設定 */
+    @media print {
+      body {
+        background: none;
+      }
+
+      main {
+        display: block;
+        padding: 0;
+        margin: 0;
+        overflow: visible;
+      }
+
+      .page {
+        width: 100%;
+        max-width: none;
+        min-height: auto;
+        margin: 0;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+        break-after: page;
+        page-break-after: always;
+      }
+
+      .page:last-child {
+        break-after: auto;
+        page-break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="page">1ページ目</div>
+    <div class="page">2ページ目</div>
+    <div class="page">3ページ目</div>
+    <div class="page">4ページ目</div>
+  </main>
+</body>
+</html>
