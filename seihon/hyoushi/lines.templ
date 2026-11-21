@@ -1,0 +1,10 @@
+package hyoushi
+
+// Lines は行ごとのテキストを <br/> でつないで出力する。
+templ Lines(values []string) {
+	for i, value := range values {
+		if i > 0 {
+			<br/>
+		}{value}
+	}
+}

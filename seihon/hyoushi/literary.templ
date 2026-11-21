@@ -1,12 +1,13 @@
 package hyoushi
 
-templ Literary() {
+templ Literary(data CoverData) {
+	{{ data = withDefaults(data, DefaultLiterary()) }}
 	<!DOCTYPE html>
 	<html lang="ja">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>純文学表紙風 — 霧の桟橋で待っている</title>
+			<title>純文学表紙風 — { joinLines(data.Title) }</title>
 			<style>
 				:root {
 					--washi: #f4efe6;
@@ -163,25 +164,24 @@ templ Literary() {
 			<article class="literary-book" aria-label="純文学風の本の表紙デザイン">
 				<div class="inner-frame">
 					<header class="top-colophon">
-						<span>青霧書房</span>
-						<span>現代文学選</span>
+						<span>{ data.Publisher }</span>
+						<span>{ data.Series }</span>
 					</header>
 
 					<section class="vertical-stage">
-						<h1 class="vertical-title">霧の桟橋で<br/>待っている</h1>
+						<h1 class="vertical-title">
+							@Lines(data.Title)
+						</h1>
 
 						<div class="epigraph">
-							潮の引く音を数えながら、<br/>
-							誰も来ない船着き場に立つ。<br/>
-							忘れてしまった言葉だけが、<br/>
-							冷たい空気のなかで澄んでいる。
-							<span class="hanko" aria-hidden="true">栞</span>
+							@Lines(data.Epigraph)
+							<span class="hanko" aria-hidden="true">{ data.Hanko }</span>
 						</div>
 					</section>
 
 					<footer class="bottom-author">
-						<span class="author-name">朝倉 静子</span>
-						<span class="edition-note">第一刷</span>
+						<span class="author-name">{ data.Author }</span>
+						<span class="edition-note">{ data.Edition }</span>
 					</footer>
 				</div>
 			</article>

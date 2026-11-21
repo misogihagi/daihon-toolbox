@@ -1,12 +1,13 @@
 package hyoushi
 
-templ Simple() {
+templ Simple(data CoverData) {
+	{{ data = withDefaults(data, DefaultSimple()) }}
 	<!DOCTYPE html>
 	<html lang="ja">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>本の表紙デザイン — 静かな夜の地図</title>
+			<title>シンプル表紙風 — { joinLines(data.Title) }</title>
 			<style>
 				:root {
 					--paper: #f6f1e7;
@@ -171,24 +172,25 @@ templ Simple() {
 		<body>
 			<article class="book" aria-label="本の表紙デザイン">
 				<header class="top-meta">
-					<span class="label-badge">KAZE BUNKO</span>
-					<span>042</span>
+					<span class="label-badge">{ data.Label }</span>
+					<span>{ data.Number }</span>
 				</header>
 
 				<section class="centerpiece">
 					<div class="motif" aria-hidden="true"></div>
-					<p class="subtitle">短編連作集</p>
-					<h1 class="title">静かな夜の<br/>地図</h1>
+					<p class="subtitle">{ data.Subtitle }</p>
+					<h1 class="title">
+						@Lines(data.Title)
+					</h1>
 
 					<div class="obi">
 						<p class="obi-catch">
-							終電を逃した街角で、まだ名前のない約束を交わす。<br/>
-							読むたびに行き先が変わる、十一の夜咄。
+							@Lines(data.Obi)
 						</p>
 					</div>
 				</section>
 
-				<footer class="author">湊 蒼一郎</footer>
+				<footer class="author">{ data.Author }</footer>
 			</article>
 		</body>
 	</html>

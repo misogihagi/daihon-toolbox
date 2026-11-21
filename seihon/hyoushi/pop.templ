@@ -1,12 +1,13 @@
 package hyoushi
 
-templ Pop() {
+templ Pop(data CoverData) {
+	{{ data = withDefaults(data, DefaultPop()) }}
 	<!DOCTYPE html>
 	<html lang="ja">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>本の表紙デザイン — 毎日がちょっと楽しくなる工夫ノート</title>
+			<title>ポップ表紙風 — { joinLines(data.Title) }</title>
 			<style>
 				:root {
 					--bg-pop: #fff8e7;
@@ -194,32 +195,37 @@ templ Pop() {
 				<div class="corner-star" aria-hidden="true">★</div>
 
 				<header class="top-bar">
-					<span class="pill pill--coral">初心者OK</span>
-					<span class="pill">イラスト付き</span>
+					for i, pill := range data.Pills {
+						<span class={ "pill", templ.KV("pill--coral", i == 0) }>{ pill }</span>
+					}
 				</header>
 
 				<section class="hero">
-					<p class="kicker">5分でできる！</p>
+					<p class="kicker">{ data.Kicker }</p>
 					<h1 class="pop-title">
-						毎日がちょっと<br/>
-						<span class="highlight">楽しくなる</span><br/>
-						工夫ノート
+						for i, line := range data.Title {
+							if i > 0 {
+								<br/>
+							}if i == 1 {
+								<span class="highlight">{ line }</span>
+							}else {
+								{line}}
+						}
 					</h1>
 					<div class="mini-badges">
-						<span>#朝活</span>
-						<span>#片付け</span>
-						<span>#気分転換</span>
+						for _, badge := range data.Badges {
+							<span>{ badge }</span>
+						}
 					</div>
 				</section>
 
 				<div class="sticker-obi">
-					がんばりすぎないのに、ちゃんと変わる。<br/>
-					小さなアイデア100選！
+					@Lines(data.Obi)
 				</div>
 
 				<footer class="bottom-meta">
-					<span class="author-name">ひなた まゆ</span>
-					<span class="publisher">POP BOOKS</span>
+					<span class="author-name">{ data.Author }</span>
+					<span class="publisher">{ data.Publisher }</span>
 				</footer>
 			</article>
 		</body>

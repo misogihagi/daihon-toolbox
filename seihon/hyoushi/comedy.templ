@@ -1,12 +1,13 @@
 package hyoushi
 
-templ Comedy() {
+templ Comedy(data CoverData) {
+	{{ data = withDefaults(data, DefaultComedy()) }}
 	<!DOCTYPE html>
 	<html lang="ja">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>コメディ表紙風 — 魔王軍の経理課は今日も残業が止まらない</title>
+			<title>コメディ表紙風 — { joinLines(data.Title) }</title>
 			<style>
 				:root {
 					--bg-comic: #fff3b0;
@@ -239,38 +240,40 @@ templ Comedy() {
 		<body>
 			<article class="comedy-book" aria-label="コメディ調の本の表紙デザイン">
 				<header class="top-strip">
-					<span class="genre-tag">お仕事ドタバタコメディ</span>
-					<span class="caution-tag">※笑いすぎて作業中断注意</span>
+					<span class="genre-tag">{ data.Genre }</span>
+					<span class="caution-tag">{ data.Caution }</span>
 				</header>
 
 				<section class="title-stage">
-					<div class="speech-bubble">「勇者撃退の領収書、宛名が『世界平和』ってなんですか!?」</div>
-					<h1 class="comedy-title">
-						魔王軍の経理課は
-						<span class="sub-line">今日も残業が止まらない！</span>
-					</h1>
+					<div class="speech-bubble">{ data.Speech }</div>
+					<h1 class="comedy-title">{data.Title[0]}if len(data.Title) > 1 {
+						<span class="sub-line">{ joinLines(data.Title[1:]) }</span>
+					}</h1>
 				</section>
 
 				<div class="gag-panel">
 					<div class="gag-header">
-						<span>【本日の差し戻し案件】</span>
-						<span>承認待ち：99件</span>
+						<span>{ data.GagLeft }</span>
+						<span>{ data.GagRight }</span>
 					</div>
 					<div class="receipt-box">
-						・火の玉魔法の燃料費：計上不可<br/>
-						・城の壁を壊した損害賠償：<span class="bad">月3回目</span><br/>
-						・部下の「ちょっと世界征服してきます」：<span class="bad">理由不備</span>
+						for i, line := range data.Receipt {
+							if i > 0 {
+								<br/>
+							}{line.Text}if line.Emphasis != "" {
+								<span class="bad">{ line.Emphasis }</span>
+							}
+						}
 					</div>
 				</div>
 
 				<div class="comedy-obi">
-					世界征服より、まずは経費精算！<br/>
-					胃薬片手に奮闘する中間管理職コメディ第1弾！
+					@Lines(data.Obi)
 				</div>
 
 				<footer class="comedy-footer">
-					<span class="comedy-author">著：電卓 太郎</span>
-					<span class="comedy-imprint">WARAI BUNKO</span>
+					<span class="comedy-author">著：{ data.Author }</span>
+					<span class="comedy-imprint">{ data.Label }</span>
 				</footer>
 			</article>
 		</body>

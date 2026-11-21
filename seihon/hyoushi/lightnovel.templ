@@ -1,12 +1,13 @@
 package hyoushi
 
-templ LightNovel() {
+templ LightNovel(data CoverData) {
+	{{ data = withDefaults(data, DefaultLightNovel()) }}
 	<!DOCTYPE html>
 	<html lang="ja">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>ライトノベル表紙風 — 放課後、時計塔の鍵をなくした僕らは世界を巻き戻す</title>
+			<title>ライトノベル表紙風 — { joinLines(data.Title) }</title>
 			<style>
 				:root {
 					--bg-dark: #0e1224;
@@ -261,34 +262,32 @@ templ LightNovel() {
 				<div class="diagonal-slash" aria-hidden="true"></div>
 
 				<header class="top-header">
-					<span class="label-tag">STARLIGHT BUNKO</span>
-					<span class="vol-badge">第1巻</span>
+					<span class="label-tag">{ data.Label }</span>
+					<span class="vol-badge">{ data.Volume }</span>
 				</header>
 
 				<div class="art-frame">
 					<div class="clock-tower" aria-hidden="true"></div>
-					<span class="art-caption">ILLUSTRATION AREA（画像・SVG差し替え可）</span>
+					<span class="art-caption">{ data.ArtCaption }</span>
 				</div>
 
 				<section class="title-block">
-					<p class="catch-top">「あと五分だけ、君とやり直したい」——停まった時間が動き出す青春ファンタジー！</p>
-					<h1 class="ln-title">
-						放課後、時計塔の鍵をなくした僕らは<br/>
-						<span class="accent-word">世界を巻き戻す</span>
-					</h1>
+					<p class="catch-top">{ data.Catch }</p>
+					<h1 class="ln-title">{data.Title[0]}if len(data.Title) > 1 {
+						<br/><span class="accent-word">{ joinLines(data.Title[1:]) }</span>
+					}</h1>
 				</section>
 
 				<div class="ln-obi">
-					<span class="obi-badge">発売即重版決定！</span>
+					<span class="obi-badge">{ data.ObiBadge }</span>
 					<p class="obi-text">
-						無口な図書委員と落ちこぼれ鍵師が挑む、七度目の夏休み。<br/>
-						ラスト三ページの伏線に、きっと息をのむ。
+						@Lines(data.Obi)
 					</p>
 				</div>
 
 				<footer class="credits">
-					<span class="author-ln">著／神楽 悠真</span>
-					<span class="illustrator">イラスト／白銀 こなつ</span>
+					<span class="author-ln">著／{ data.Author }</span>
+					<span class="illustrator">イラスト／{ data.Illustrator }</span>
 				</footer>
 			</article>
 		</body>
