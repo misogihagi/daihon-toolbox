@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>純文学本文 — 霧の桟橋で待っている</title>
+  <style>
+    :root {
+      --paper: #f6f2ea;
+      --ink: #1d1c1a;
+      --muted: #68645d;
+      --fold: rgba(29, 28, 26, 0.14);
+      --border-soft: rgba(29, 28, 26, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #dcd5c7 0%, #c4bbb0 100%);
+      padding: 32px 16px;
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+      color: var(--ink);
+    }
+
+    /* 見開き（右ページ→左ページへ読む縦書きの紙面） */
+    .spread {
+      position: relative;
+      width: min(860px, 96vw);
+      min-height: 540px;
+      background: var(--paper);
+      border-radius: 4px;
+      box-shadow:
+        0 20px 45px rgba(29, 28, 26, 0.25),
+        0 2px 6px rgba(29, 28, 26, 0.12);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+
+    /* ノド（中央の綴じ目・影） */
+    .spread::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(29, 28, 26, 0.05) 35%,
+        rgba(29, 28, 26, 0.16) 50%,
+        rgba(29, 28, 26, 0.05) 65%,
+        transparent 100%
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .page {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      padding: 34px 36px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      min-height: 540px;
+    }
+
+    .page--right {
+      border-left: 1px solid var(--border-soft);
+    }
+
+    /* 柱（ランニングヘッド：天側の見出し） */
+    .running-head {
+      font-size: 10.5px;
+      letter-spacing: 0.24em;
+      color: var(--muted);
+      height: 100%;
+      display: flex;
+      align-items: flex-start;
+      padding-left: 14px;
+    }
+
+    /* 本文エリア */
+    .body-text {
+      flex: 1;
+      font-size: clamp(14.5px, 1.85vw, 17px);
+      line-height: 1.95;
+      letter-spacing: 0.06em;
+      overflow: hidden;
+    }
+
+    .chapter-title {
+      font-size: clamp(17px, 2.2vw, 20px);
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      margin-left: 28px;
+      padding-top: 24px;
+      color: var(--ink);
+    }
+
+    .body-text p {
+      text-indent: 1em; /* 段落冒頭の1字下げ */
+      margin-left: 0.55em;
+    }
+
+    .body-text p + p {
+      margin-left: 0.7em;
+    }
+
+    /* 場面転換の空き行（アキ） */
+    .scene-break {
+      writing-mode: horizontal-tb;
+      text-align: center;
+      letter-spacing: 0.6em;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 12px 0;
+      margin-left: 18px;
+    }
+
+    /* ノンブル（ページ番号） */
+    .folio {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      align-self: flex-end;
+      padding-right: 12px;
+    }
+
+    /* 画面幅が狭いときは1ページずつ縦並びにする */
+    @media (max-width: 720px) {
+      .spread {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .spread::before {
+        display: none;
+      }
+
+      .page {
+        min-height: 460px;
+        padding: 26px 22px;
+      }
+
+      .page--right {
+        border-left: none;
+        border-bottom: 1px solid var(--fold);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="spread" aria-label="純文学の本文見開き">
+    <!-- 右ページ（縦書きの1ページ目） -->
+    <section class="page page--right" aria-label="13ページ">
+      <header class="running-head">霧の桟橋で待っている</header>
+
+      <article class="body-text">
+        <h1 class="chapter-title">一 潮の匂い</h1>
+        <p>午前五時の桟橋は、まだ夜の名残を木板の隙間に溜めている。靴底が湿った板を鳴らすたび、足元の暗がりから細い潮の匂いが立ちのぼった。</p>
+        <p>対岸の灯台は三秒に一度、白く薄い光を水面へ投げかける。光が届くのはほんの一瞬で、そのあとにはまた、どこまで続いているのかわからない濃霧が戻ってくる。</p>
+        <p>「船は、本当に来るんでしょうか」</p>
+        <p>コートの襟を立てたまま、そう尋ねたのは昨日から何回目だろう。返事の代わりに聞こえたのは、係留ロープが軋む乾いた音だけだった。</p>
+      </article>
+
+      <footer class="folio">13</footer>
+    </section>
+
+    <!-- 左ページ（縦書きの2ページ目） -->
+    <section class="page page--left" aria-label="14ページ">
+      <header class="running-head">朝倉 静子</header>
+
+      <article class="body-text">
+        <p>ポケットの中で、指先が小さな真鍮の鍵に触れる。誰に返すあてもない鍵を、彼女はずっと手放せずにいた。</p>
+        <p>あの部屋のドアは、もう別の誰かが開けているかもしれない。それでも、鍵を握っているあいだだけは、自分がまだあの時間の続きにいるような気がした。</p>
+
+        <div class="scene-break" aria-hidden="true">＊ ＊ ＊</div>
+
+        <p>霧の奥で、かすかに汽笛のような音が響いた気がした。顔を上げると、灰色の空と海の境目がわずかに白みはじめている。</p>
+        <p>待つという行為は、終わりを決めてしまえば案外しずかなものだ。彼女はベンチの端に腰を下ろし、冷えた手のひらをゆっくりとほどいた。</p>
+      </article>
+
+      <footer class="folio">14</footer>
+    </section>
+  </main>
+</body>
+</html>
