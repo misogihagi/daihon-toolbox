@@ -1,5 +1,7 @@
 package seihon
 
+import "github.com/misogihagi/daihon-toolbox/seihon/honbun"
+
 templ A5() {
 	<!DOCTYPE html>
 	<html lang="ja">
@@ -7,6 +9,7 @@ templ A5() {
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>A5サイズ レイアウト</title>
+			@honbun.SimpleContentStyles()
 			<style>
 				/* A5サイズおよび印刷プレビュー用の設定 */
 				@page {
@@ -99,10 +102,7 @@ templ A5() {
 		</head>
 		<body>
 			<main>
-				<div class="page">1ページ目</div>
-				<div class="page">2ページ目</div>
-				<div class="page">3ページ目</div>
-				<div class="page">4ページ目</div>
+				@honbun.SimplePages(honbun.BodyData{})
 			</main>
 		</body>
 	</html>
