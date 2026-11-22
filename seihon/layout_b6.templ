@@ -1,0 +1,109 @@
+package seihon
+
+import "github.com/misogihagi/daihon-toolbox/seihon/honbun"
+
+templ B6() {
+	<!DOCTYPE html>
+	<html lang="ja">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<title>B6サイズ レイアウト</title>
+			@honbun.SimpleContentStyles()
+			<style>
+				/* B6サイズおよび印刷プレビュー用の設定 */
+				@page {
+					size: B6;
+					margin: 15mm;
+				}
+
+				body {
+					background-color: #fff;
+					color: #222;
+					font-family: "Hiragino Mincho ProN", "Yu Mincho", "MS Mincho", serif;
+					margin: 0;
+					padding: 0;
+				}
+
+				/* 画面表示用：若いページを右にし、左方向へ横スクロールさせる */
+				main {
+					display: flex;
+					flex-direction: row-reverse;
+					justify-content: flex-start; /* row-reverse時は右端基準で左へ並ぶ */
+					align-items: flex-start;
+					flex-wrap: nowrap;
+					gap: 24px;
+					padding: 20px;
+					overflow-x: auto;
+					box-sizing: border-box;
+				}
+
+				/* B6用紙を模したコンテナ（画面表示用） */
+				.page {
+					flex: 0 0 128mm; /* 縮まずにB6幅を維持 */
+					width: 128mm;
+					min-height: 182mm;
+					padding: 18mm 12mm;
+					margin: 0;
+					background: #fdfcf9;
+					border: 1px solid #dcd6cd;
+					box-sizing: border-box;
+					box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+				}
+
+				/* 画面幅が狭いときは縦並びにする */
+				@media (max-width: 720px) {
+					main {
+						flex-direction: column;
+						align-items: center;
+						overflow-x: visible;
+					}
+
+					.page {
+						flex: none;
+						width: 100%;
+						max-width: 128mm;
+						min-height: 400px;
+						padding: 22px 18px;
+					}
+				}
+
+				/* 印刷時の設定 */
+				@media print {
+					body {
+						background: none;
+					}
+
+					main {
+						display: block;
+						padding: 0;
+						margin: 0;
+						overflow: visible;
+					}
+
+					.page {
+						width: 100%;
+						max-width: none;
+						min-height: auto;
+						margin: 0;
+						padding: 0;
+						border: none;
+						box-shadow: none;
+						break-after: page;
+						page-break-after: always;
+					}
+
+					.page:last-child {
+						break-after: auto;
+						page-break-after: auto;
+					}
+				}
+			</style>
+		</head>
+		<body>
+			<main>
+				@honbun.SimplePages(honbun.BodyData{})
+			</main>
+		</body>
+	</html>
+}
