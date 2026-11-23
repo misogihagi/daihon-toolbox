@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>あとがき・制作コメント（横書き） — 霧の桟橋で待っている</title>
+  <style>
+    :root {
+      --paper: #f6f2ea;
+      --ink: #1d1c1a;
+      --muted: #68645d;
+      --accent: #8f3a2e;
+      --fold: rgba(29, 28, 26, 0.14);
+      --border-soft: rgba(29, 28, 26, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(180deg, #dcd5c7 0%, #c4bbb0 100%);
+      padding: 32px 16px;
+      font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
+      color: var(--ink);
+    }
+
+    /* 横書き見開き（左ページ→右ページへ読む構成） */
+    .spread {
+      position: relative;
+      width: min(900px, 96vw);
+      min-height: 540px;
+      background: var(--paper);
+      border-radius: 4px;
+      box-shadow:
+        0 20px 45px rgba(29, 28, 26, 0.25),
+        0 2px 6px rgba(29, 28, 26, 0.12);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+
+    /* 中央の綴じ目（ノド） */
+    .spread::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(29, 28, 26, 0.05) 35%,
+        rgba(29, 28, 26, 0.16) 50%,
+        rgba(29, 28, 26, 0.05) 65%,
+        transparent 100%
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .page {
+      padding: 30px 36px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      min-height: 540px;
+    }
+
+    .page--left {
+      border-right: 1px solid var(--border-soft);
+    }
+
+    /* 柱（ランニングヘッド） */
+    .running-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10.5px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(29, 28, 26, 0.08);
+      margin-bottom: 18px;
+    }
+
+    /* 左ページ：作者による執筆の感想 */
+    .author-essay {
+      flex: 1;
+      font-size: clamp(13.5px, 1.55vw, 15px);
+      line-height: 1.85;
+      letter-spacing: 0.03em;
+      color: #242320;
+    }
+
+    .section-label {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      margin-bottom: 14px;
+      color: var(--ink);
+    }
+
+    .author-essay p {
+      text-indent: 1em;
+      margin-bottom: 12px;
+    }
+
+    .author-sign {
+      margin-top: 18px;
+      text-align: right;
+      font-size: 13.5px;
+      letter-spacing: 0.22em;
+      color: var(--ink);
+    }
+
+    /* 右ページ：編集・デザイナーからのコメント欄 */
+    .staff-notes {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .notes-header {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: var(--accent);
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .comment-card {
+      border-left: 2px solid var(--border-soft);
+      padding-left: 14px;
+      font-size: clamp(12.5px, 1.45vw, 13.8px);
+      line-height: 1.78;
+      letter-spacing: 0.02em;
+      color: #2c2b28;
+    }
+
+    .comment-role {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    .comment-name {
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.14em;
+    }
+
+    .comment-card p {
+      text-indent: 1em;
+    }
+
+    /* ノンブル（ページ番号） */
+    .folio {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      text-align: center;
+      padding-top: 14px;
+    }
+
+    @media (max-width: 760px) {
+      .spread {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .spread::before {
+        display: none;
+      }
+
+      .page {
+        min-height: auto;
+        padding: 26px 22px;
+      }
+
+      .page--left {
+        border-right: none;
+        border-bottom: 1px solid var(--fold);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="spread" aria-label="横書きのあとがきと制作陣コメント見開き">
+    <!-- 左ページ：作者による作品を書いた感想 -->
+    <section class="page page--left" aria-label="211ページ">
+      <div>
+        <header class="running-head">
+          <span>あとがき</span>
+          <span>朝倉 静子</span>
+        </header>
+
+        <article class="author-essay">
+          <h1 class="section-label">書き終えて</h1>
+          <p>この物語を書きはじめたとき、正直なところ、主人公が桟橋のベンチから立ち上がる場面まで辿り着けるのか自分でもわかりませんでした。霧のなかに立ち止まったままの時間を書くことは、書いている私自身もまた、同じ冷たい空気のなかに座り続けるような作業だったからです。</p>
+          <p>けれど一行ずつ言葉を置いていくうちに、声高には語られない迷いや、誰にも渡せなかった鍵の重みそのものが、静かに物語を前へ押し出してくれました。大きな出来事は起きなくても、人の心は確かに動いているのだと、登場人物たちに教わった気がします。</p>
+          <p>書き終えた今、ようやく朝の光が差した桟橋を後ろから見送るような気持ちでいます。この静けさが、読んでくださった方のどこかにも残れば幸いです。</p>
+          <div class="author-sign">朝倉 静子</div>
+        </article>
+      </div>
+
+      <footer class="folio">211</footer>
+    </section>
+
+    <!-- 右ページ：担当編集・装丁デザイナーのコメント -->
+    <section class="page page--right" aria-label="212ページ">
+      <div>
+        <header class="running-head">
+          <span>霧の桟橋で待っている</span>
+          <span>制作ノート</span>
+        </header>
+
+        <aside class="staff-notes" aria-label="編集・装丁コメント">
+          <div class="notes-header">一冊ができるまで</div>
+
+          <div class="comment-card">
+            <span class="comment-role">担当編集／<span class="comment-name">佐伯 恒一</span></span>
+            <p>最初に第一稿を拝読した夜、読み終えてもしばらく部屋の明かりをつけられずにいました。余白のなかにこれほど豊かな感情を宿せるのかと、改稿を重ねるたびに胸を打たれました。静かな夜に何度も開きたくなる一冊です。</p>
+          </div>
+
+          <div class="comment-card">
+            <span class="comment-role">装丁・造本設計／<span class="comment-name">三輪 澄江</span></span>
+            <p>原稿から立ちのぼる潮の匂いと朝の冷気を、手触りのある生成り色の紙と最小限の罫線に託しました。タイトルの組み方が、霧のなかに佇む一本の桟橋のように見えればと思いながら設計しています。</p>
+          </div>
+        </aside>
+      </div>
+
+      <footer class="folio">212</footer>
+    </section>
+  </main>
+</body>
+</html>
