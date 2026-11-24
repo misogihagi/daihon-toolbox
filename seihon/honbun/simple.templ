@@ -8,112 +8,98 @@ templ SimpleContentStyles() {
 			--muted: #68645d;
 			--fold: rgba(29, 28, 26, 0.14);
 			--border-soft: rgba(29, 28, 26, 0.12);
+			--b6-w: 128mm;
+			--b6-h: 182mm;
+			--margin-top: 21mm;
+			--margin-bottom: 16mm;
+			--margin-fore-edge: 13mm; /* 小口 */
+			--margin-spine: 23mm;     /* ノド */
+			--spine-shadow: 10mm;     /* ノド中心からの影の幅 */
 		}
 
 		/* 本文部分だけを埋め込むとき用のリセット（各クラス指定より前に置く） */
 		.page,
-		.page * {
+		.page *,
+		.page *::before,
+		.page *::after {
 			box-sizing: border-box;
 			margin: 0;
 			padding: 0;
 		}
 
-		/* 本文ページ */
+		/* 本文ページ（B6・9ptの文庫／純文学サイズ・縦書き） */
 		.page {
-			writing-mode: vertical-rl;
-			text-orientation: mixed;
-			padding: 34px 36px;
 			display: flex;
 			flex-direction: column;
-			justify-content: space-between;
-			position: relative;
-			min-height: 540px;
+			gap: 6mm;
+			background: var(--paper);
 		}
 
-		.page--right {
-			border-left: 1px solid var(--border-soft);
-		}
-
-		/* 柱（ランニングヘッド：天側の見出し） */
+		/* 柱（ランニングヘッド＋ノンブル：横書き・天側上部に配置） */
 		.running-head {
-			font-size: 10.5px;
-			letter-spacing: 0.24em;
+			width: 100%;
+			writing-mode: horizontal-tb;
+			font-size: 7pt;
+			line-height: 1.4;
+			letter-spacing: 0.16em;
 			color: var(--muted);
-			height: 100%;
 			display: flex;
-			align-items: flex-start;
-			padding-left: 14px;
+			align-items: center;
+			justify-content: space-between;
+			white-space: nowrap;
+			flex-shrink: 0;
 		}
 
-		/* 本文エリア */
+		/* 柱内のノンブル（ページ番号） */
+		.folio {
+			font-size: 7.5pt;
+			letter-spacing: 0.12em;
+			font-variant-numeric: lining-nums;
+		}
+
+		/* 本文エリア（B6・9ptの文庫／純文学サイズ・縦書き） */
 		.body-text {
 			flex: 1;
-			font-size: clamp(14.5px, 1.85vw, 17px);
-			line-height: 1.95;
-			letter-spacing: 0.06em;
+			min-height: 0;
+			writing-mode: vertical-rl;
+			text-orientation: mixed;
+			font-size: 9pt;
+			line-height: 1.7;
 			overflow: hidden;
 		}
 
 		.chapter-title {
-			font-size: clamp(17px, 2.2vw, 20px);
+			font-size: 11pt;
 			font-weight: 600;
-			letter-spacing: 0.22em;
-			margin-left: 28px;
-			padding-top: 24px;
+			letter-spacing: 0.18em;
+			margin-left: 8mm;
+			padding-top: 8mm;
 			color: var(--ink);
-		}
-
-		.body-text p {
-			text-indent: 1em; /* 段落冒頭の1字下げ */
-			margin-left: 0.55em;
-		}
-
-		.body-text p + p {
-			margin-left: 0.7em;
 		}
 
 		/* 場面転換の空き行（アキ） */
 		.scene-break {
 			writing-mode: horizontal-tb;
 			text-align: center;
-			letter-spacing: 0.6em;
+			letter-spacing: 0.5em;
 			color: var(--muted);
-			font-size: 13px;
-			padding: 12px 0;
-			margin-left: 18px;
-		}
-
-		/* ノンブル（ページ番号） */
-		.folio {
-			font-size: 11px;
-			letter-spacing: 0.16em;
-			color: var(--muted);
-			align-self: flex-end;
-			padding-right: 12px;
-		}
-
-		/* 画面幅が狭いときは1ページずつ縦並びにする */
-		@media (max-width: 720px) {
-			.page {
-				min-height: 460px;
-				padding: 26px 22px;
-			}
-
-			.page--right {
-				border-left: none;
-				border-bottom: 1px solid var(--fold);
-			}
+			font-size: 8.5pt;
+			padding: 4mm 0;
+			margin-left: 5mm;
 		}
 	</style>
 }
 
 // SimplePages は本文の2ページ分だけを描画する。
-// A5 レイアウトの <main> 内などに埋め込んで使う。
+// A5 / B6 レイアウトの <main> 内などに埋め込んで使う。
 templ SimplePages(data BodyData) {
 	{{ data = withDefaults(data, DefaultSimple()) }}
-	<!-- 右ページ（縦書きの1ページ目） -->
+	<!-- 右ページ（縦書きの1ページ目：13ページ → ノド側に章名、小口側にノンブル） -->
 	<section class="page page--right" aria-label={ data.RightPage.Label }>
-		<header class="running-head">{ data.Title }</header>
+		<header class="running-head">
+			<span class="running-title">{ data.RightPage.ChapterTitle }</span>
+			<span class="folio">{ data.RightPage.Folio }</span>
+		</header>
 		<article class="body-text">
 			if data.RightPage.ChapterTitle != "" {
 				<h1 class="chapter-title">{ data.RightPage.ChapterTitle }</h1>
@@ -122,11 +108,13 @@ templ SimplePages(data BodyData) {
 				<p>{ paragraph }</p>
 			}
 		</article>
-		<footer class="folio">{ data.RightPage.Folio }</footer>
 	</section>
-	<!-- 左ページ（縦書きの2ページ目） -->
+	<!-- 左ページ（縦書きの2ページ目：14ページ → 小口側にノンブル、ノド側に作品タイトル） -->
 	<section class="page page--left" aria-label={ data.LeftPage.Label }>
-		<header class="running-head">{ data.Author }</header>
+		<header class="running-head">
+			<span class="folio">{ data.LeftPage.Folio }</span>
+			<span class="running-title">{ data.Title }</span>
+		</header>
 		<article class="body-text">
 			for _, paragraph := range data.LeftPage.Paragraphs {
 				<p>{ paragraph }</p>
@@ -138,7 +126,6 @@ templ SimplePages(data BodyData) {
 				<p>{ paragraph }</p>
 			}
 		</article>
-		<footer class="folio">{ data.LeftPage.Folio }</footer>
 	</section>
 }
 
@@ -149,10 +136,10 @@ templ Simple(data BodyData) {
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>純文学本文 — { data.Title }</title>
+			<title>純文学本文 — { data.Title }（B6・9pt）</title>
 			@SimpleContentStyles()
 			<style>
-				* {
+				*, *::before, *::after {
 					box-sizing: border-box;
 					margin: 0;
 					padding: 0;
@@ -163,56 +150,135 @@ templ Simple(data BodyData) {
 					display: grid;
 					place-items: center;
 					background: linear-gradient(180deg, #dcd5c7 0%, #c4bbb0 100%);
-					padding: 32px 16px;
+					padding: 24px 16px;
 					font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Noto Serif JP", serif;
 					color: var(--ink);
 				}
 
-				/* 見開き（右ページ→左ページへ読む縦書きの紙面） */
+				/* 見開き（B6片面 128mm × 182mm の2面＝256mm × 182mm） */
 				.spread {
-					position: relative;
-					width: min(860px, 96vw);
-					min-height: 540px;
+					width: calc(var(--b6-w) * 2);
+					max-width: 100%;
+					height: var(--b6-h);
 					background: var(--paper);
-					border-radius: 4px;
+					border-radius: 2px;
 					box-shadow:
 						0 20px 45px rgba(29, 28, 26, 0.25),
 						0 2px 6px rgba(29, 28, 26, 0.12);
 					display: grid;
-					grid-template-columns: 1fr 1fr;
+					grid-template-columns: var(--b6-w) var(--b6-w);
 					overflow: hidden;
 				}
 
-				/* ノド（中央の綴じ目・影） */
-				.spread::before {
-					content: "";
-					position: absolute;
-					top: 0;
-					bottom: 0;
-					left: 50%;
-					transform: translateX(-50%);
-					width: 28px;
-					background: linear-gradient(
-						90deg,
-						transparent 0%,
-						rgba(29, 28, 26, 0.05) 35%,
-						rgba(29, 28, 26, 0.16) 50%,
-						rgba(29, 28, 26, 0.05) 65%,
-						transparent 100%
-					);
-					pointer-events: none;
-					z-index: 2;
+				/* 右から左（13ページ → 14ページ）の順で配置 */
+				.page {
+					width: var(--b6-w);
+					height: var(--b6-h);
 				}
 
-				/* 画面幅が狭いときは見開きを1ページずつ縦並びにする */
+				.page--right {
+					grid-column: 2;
+					grid-row: 1;
+					order: 1;
+					padding: var(--margin-top) var(--margin-fore-edge) var(--margin-bottom) var(--margin-spine);
+					border-left: 1px solid var(--border-soft);
+					box-shadow: inset var(--spine-shadow) 0 calc(var(--spine-shadow) * 0.8) calc(var(--spine-shadow) * -0.35) rgba(29, 28, 26, 0.18);
+				}
+
+				.page--left {
+					grid-column: 1;
+					grid-row: 1;
+					order: 2;
+					padding: var(--margin-top) var(--margin-spine) var(--margin-bottom) var(--margin-fore-edge);
+					box-shadow: inset calc(var(--spine-shadow) * -1) 0 calc(var(--spine-shadow) * 0.8) calc(var(--spine-shadow) * -0.35) rgba(29, 28, 26, 0.18);
+				}
+
+				/* 画面幅が狭いときは1ページずつ縦並びにする（13ページ→14ページの順） */
 				@media (max-width: 720px) {
 					.spread {
+						width: var(--b6-w);
+						max-width: 100%;
+						height: auto;
 						grid-template-columns: 1fr;
-						min-height: auto;
 					}
 
-					.spread::before {
-						display: none;
+					.page {
+						width: 100%;
+						height: var(--b6-h);
+					}
+
+					.page--right {
+						grid-column: auto;
+						grid-row: auto;
+						order: 1;
+						padding: var(--margin-top) var(--margin-fore-edge) var(--margin-bottom) var(--margin-spine);
+						border-left: none;
+						border-bottom: 1px solid var(--fold);
+						box-shadow: none;
+					}
+
+					.page--left {
+						grid-column: auto;
+						grid-row: auto;
+						order: 2;
+						padding: var(--margin-top) var(--margin-fore-edge) var(--margin-bottom) var(--margin-spine);
+						box-shadow: none;
+					}
+				}
+
+				@page {
+					size: 128mm 182mm;
+					margin: 0;
+				}
+
+				@media print {
+					* {
+						-webkit-print-color-adjust: none;
+						print-color-adjust: none;
+					}
+
+					html, body {
+						width: var(--b6-w);
+						margin: 0;
+						padding: 0;
+						background: var(--paper);
+						display: block;
+					}
+
+					.spread {
+						display: flex;
+						flex-direction: column;
+						width: var(--b6-w);
+						max-width: none;
+						height: auto;
+						background: transparent;
+						box-shadow: none;
+						border-radius: 0;
+						overflow: visible;
+					}
+
+					.page {
+						width: var(--b6-w);
+						height: var(--b6-h);
+						box-shadow: none;
+						border: none;
+						break-inside: avoid;
+						page-break-inside: avoid;
+					}
+
+					/* 印刷時は 13ページ（.page--right）→ 14ページ（.page--left）の順で各1ページに出力 */
+					.page--right {
+						order: 1;
+						padding: var(--margin-top) var(--margin-fore-edge) var(--margin-bottom) var(--margin-spine);
+						break-after: page;
+						page-break-after: always;
+					}
+
+					.page--left {
+						order: 2;
+						padding: var(--margin-top) var(--margin-spine) var(--margin-bottom) var(--margin-fore-edge);
+						break-after: auto;
+						page-break-after: auto;
 					}
 				}
 			</style>

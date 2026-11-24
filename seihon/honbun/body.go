@@ -5,8 +5,7 @@ import "strings"
 // BodyData は本文テンプレートで差し込めるテキスト一式。
 // 空のフィールドはサンプル値に置き換えられる。
 type BodyData struct {
-	Title       string   // 書名（<title> と右ページの柱）
-	Author      string   // 著者名（左ページの柱）
+	Title       string   // 書名（<title> と左ページの柱）
 	SpreadLabel string   // 見開きの aria-label
 	RightPage   PageData // 右ページ（縦書きの1ページ目）
 	LeftPage    PageData // 左ページ（縦書きの2ページ目）
@@ -26,29 +25,28 @@ type PageData struct {
 func DefaultSimple() BodyData {
 	return BodyData{
 		Title:       "霧の桟橋で待っている",
-		Author:      "朝倉 静子",
-		SpreadLabel: "純文学の本文見開き",
+		SpreadLabel: "純文学の本文見開き（B6判）",
 		RightPage: PageData{
 			Label:        "13ページ",
 			ChapterTitle: "一 潮の匂い",
 			Paragraphs: []string{
-				"午前五時の桟橋は、まだ夜の名残を木板の隙間に溜めている。靴底が湿った板を鳴らすたび、足元の暗がりから細い潮の匂いが立ちのぼった。",
-				"対岸の灯台は三秒に一度、白く薄い光を水面へ投げかける。光が届くのはほんの一瞬で、そのあとにはまた、どこまで続いているのかわからない濃霧が戻ってくる。",
+				"　午前五時の桟橋は、まだ夜の名残を木板の隙間に溜めている。靴底が湿った板を鳴らすたび、足元の暗がりから細い潮の匂いが立ちのぼった。",
+				"　対岸の灯台は三秒に一度、白く薄い光を水面へ投げかける。光が届くのはほんの一瞬で、そのあとにはまた、どこまで続いているのかわからない濃霧が戻ってくる。",
 				"「船は、本当に来るんでしょうか」",
-				"コートの襟を立てたまま、そう尋ねたのは昨日から何回目だろう。返事の代わりに聞こえたのは、係留ロープが軋む乾いた音だけだった。",
+				"　コートの襟を立てたまま、そう尋ねたのは昨日から何回目だろう。返事の代わりに聞こえたのは、係留ロープが軋む乾いた音だけだった。",
 			},
 			Folio: "13",
 		},
 		LeftPage: PageData{
 			Label: "14ページ",
 			Paragraphs: []string{
-				"ポケットの中で、指先が小さな真鍮の鍵に触れる。誰に返すあてもない鍵を、彼女はずっと手放せずにいた。",
-				"あの部屋のドアは、もう別の誰かが開けているかもしれない。それでも、鍵を握っているあいだだけは、自分がまだあの時間の続きにいるような気がした。",
+				"　ポケットの中で、指先が小さな真鍮の鍵に触れる。誰に返すあてもない鍵を、彼女はずっと手放せずにいた。",
+				"　あの部屋のドアは、もう別の誰かが開けているかもしれない。それでも、鍵を握っているあいだだけは、自分がまだあの時間の続きにいるような気がした。",
 			},
 			SceneBreak: "＊ ＊ ＊",
 			TailParagraphs: []string{
-				"霧の奥で、かすかに汽笛のような音が響いた気がした。顔を上げると、灰色の空と海の境目がわずかに白みはじめている。",
-				"待つという行為は、終わりを決めてしまえば案外しずかなものだ。彼女はベンチの端に腰を下ろし、冷えた手のひらをゆっくりとほどいた。",
+				"　霧の奥で、かすかに汽笛のような音が響いた気がした。顔を上げると、灰色の空と海の境目がわずかに白みはじめている。",
+				"　待つという行為は、終わりを決めてしまえば案外しずかなものだ。彼女はベンチの端に腰を下ろし、冷えた手のひらをゆっくりとほどいた。",
 			},
 			Folio: "14",
 		},
@@ -58,7 +56,6 @@ func DefaultSimple() BodyData {
 // withDefaults は空のフィールドだけをサンプル値で埋める。
 func withDefaults(data, fallback BodyData) BodyData {
 	data.Title = valueOr(data.Title, fallback.Title)
-	data.Author = valueOr(data.Author, fallback.Author)
 	data.SpreadLabel = valueOr(data.SpreadLabel, fallback.SpreadLabel)
 	data.RightPage = withPageDefaults(data.RightPage, fallback.RightPage)
 	data.LeftPage = withPageDefaults(data.LeftPage, fallback.LeftPage)
