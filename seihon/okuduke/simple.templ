@@ -1,12 +1,13 @@
 package okuduke
 
-templ Simple() {
+templ Simple(data ColophonData) {
+	{{ data = withDefaults(data, DefaultSimple()) }}
 	<!DOCTYPE html>
 	<html lang="ja">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>奥付 — 霧の桟橋で待っている</title>
+			<title>{ data.PageTitle }</title>
 			<style>
 				:root {
 					--paper: #f6f2ea;
@@ -182,38 +183,39 @@ templ Simple() {
 				<div class="colophon-box">
 					<header class="book-header">
 						<div>
-							<span class="book-series">現代文学選</span>
-							<h1 class="book-title">霧の桟橋で待っている</h1>
+							<span class="book-series">{ data.Series }</span>
+							<h1 class="book-title">{ data.Title }</h1>
 						</div>
-						<div class="seal" aria-hidden="true">朝倉<br/>之印</div>
+						<div class="seal" aria-hidden="true">
+							for i, line := range data.Seal {
+								if i > 0 {
+									<br/>
+								}
+								{ line }
+							}
+						</div>
 					</header>
 					<div class="edition-history">
-						<p>二〇二六年十一月二十一日 第一刷発行</p>
+						<p>{ data.PublishedAt }</p>
 					</div>
 					<dl class="meta-list">
-						<dt>著  者</dt>
-						<dd>朝倉 静子</dd>
-						<dt>発 行 者</dt>
-						<dd>神田 誠一</dd>
-						<dt>発 行 所</dt>
-						<dd>
-							株式会社 青霧書房
-							<span class="sub-detail">〒101-0051 東京都千代田区神田神保町二丁目十四番地</span>
-						</dd>
-						<dt>編  集</dt>
-						<dd>佐伯 恒一</dd>
-						<dt>装丁設計</dt>
-						<dd>三輪 澄江</dd>
-						<dt>印刷・製本</dt>
-						<dd>精興堂印刷株式会社</dd>
+						for _, row := range data.Meta {
+							<dt>{ row.Term }</dt>
+							<dd>
+								{ row.Value }
+								if row.SubDetail != "" {
+									<span class="sub-detail">{ row.SubDetail }</span>
+								}
+							</dd>
+						}
 					</dl>
 					<footer class="legal-notes">
 						<div class="isbn-row">
-							<span>ISBN978-4-901234-56-7</span>
-							<span>C0093 ¥1600E</span>
+							<span>{ data.ISBN }</span>
+							<span>{ data.Price }</span>
 						</div>
-						<p>落丁・乱丁本はお手数ですが小社制作部までお送りください。送料小社負担にてお取り替えいたします。</p>
-						<p class="copyright">&copy; 2026 Shizuko Asakura, Printed in Japan</p>
+						<p>{ data.Notice }</p>
+						<p class="copyright">{ data.Copyright }</p>
 					</footer>
 				</div>
 			</article>
