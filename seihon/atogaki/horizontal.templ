@@ -1,12 +1,13 @@
 package atogaki
 
-templ Horizontal() {
+templ Horizontal(data AtogakiData) {
+	{{ data = withDefaults(data, DefaultHorizontal()) }}
 	<!DOCTYPE html>
 	<html lang="ja">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<title>あとがき・制作コメント（横書き） — 霧の桟橋で待っている</title>
+			<title>{ data.PageTitle }</title>
 			<style>
 				:root {
 					--paper: #f6f2ea;
@@ -201,44 +202,42 @@ templ Horizontal() {
 			</style>
 		</head>
 		<body>
-			<main class="spread" aria-label="横書きのあとがきと制作陣コメント見開き">
+			<main class="spread" aria-label={ data.SpreadLabel }>
 				<!-- 左ページ：作者による作品を書いた感想 -->
-				<section class="page page--left" aria-label="211ページ">
+				<section class="page page--left" aria-label={ data.Essay.Label }>
 					<div>
 						<header class="running-head">
-							<span>あとがき</span>
-							<span>朝倉 静子</span>
+							<span>{ data.Essay.RunningHead }</span>
+							<span>{ data.Essay.Author }</span>
 						</header>
 						<article class="author-essay">
-							<h1 class="section-label">書き終えて</h1>
-							<p>この物語を書きはじめたとき、正直なところ、主人公が桟橋のベンチから立ち上がる場面まで辿り着けるのか自分でもわかりませんでした。霧のなかに立ち止まったままの時間を書くことは、書いている私自身もまた、同じ冷たい空気のなかに座り続けるような作業だったからです。</p>
-							<p>けれど一行ずつ言葉を置いていくうちに、声高には語られない迷いや、誰にも渡せなかった鍵の重みそのものが、静かに物語を前へ押し出してくれました。大きな出来事は起きなくても、人の心は確かに動いているのだと、登場人物たちに教わった気がします。</p>
-							<p>書き終えた今、ようやく朝の光が差した桟橋を後ろから見送るような気持ちでいます。この静けさが、読んでくださった方のどこかにも残れば幸いです。</p>
-							<div class="author-sign">朝倉 静子</div>
+							<h1 class="section-label">{ data.Essay.Heading }</h1>
+							for _, paragraph := range data.Essay.Paragraphs {
+								<p>{ paragraph }</p>
+							}
+							<div class="author-sign">{ data.Essay.Author }</div>
 						</article>
 					</div>
-					<footer class="folio">211</footer>
+					<footer class="folio">{ data.Essay.Folio }</footer>
 				</section>
 				<!-- 右ページ：担当編集・装丁デザイナーのコメント -->
-				<section class="page page--right" aria-label="212ページ">
+				<section class="page page--right" aria-label={ data.Notes.Label }>
 					<div>
 						<header class="running-head">
-							<span>霧の桟橋で待っている</span>
-							<span>制作ノート</span>
+							<span>{ data.Title }</span>
+							<span>{ data.Notes.RunningHead }</span>
 						</header>
-						<aside class="staff-notes" aria-label="編集・装丁コメント">
-							<div class="notes-header">一冊ができるまで</div>
-							<div class="comment-card">
-								<span class="comment-role">担当編集／<span class="comment-name">佐伯 恒一</span></span>
-								<p>最初に第一稿を拝読した夜、読み終えてもしばらく部屋の明かりをつけられずにいました。余白のなかにこれほど豊かな感情を宿せるのかと、改稿を重ねるたびに胸を打たれました。静かな夜に何度も開きたくなる一冊です。</p>
-							</div>
-							<div class="comment-card">
-								<span class="comment-role">装丁・造本設計／<span class="comment-name">三輪 澄江</span></span>
-								<p>原稿から立ちのぼる潮の匂いと朝の冷気を、手触りのある生成り色の紙と最小限の罫線に託しました。タイトルの組み方が、霧のなかに佇む一本の桟橋のように見えればと思いながら設計しています。</p>
-							</div>
+						<aside class="staff-notes" aria-label={ data.Notes.CommentLabel }>
+							<div class="notes-header">{ data.Notes.Heading }</div>
+							for _, comment := range data.Notes.Comments {
+								<div class="comment-card">
+									<span class="comment-role">{ comment.Role }／<span class="comment-name">{ comment.Name }</span></span>
+									<p>{ comment.Text }</p>
+								</div>
+							}
 						</aside>
 					</div>
-					<footer class="folio">212</footer>
+					<footer class="folio">{ data.Notes.Folio }</footer>
 				</section>
 			</main>
 		</body>
